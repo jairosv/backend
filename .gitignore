@@ -9,6 +9,14 @@ public/
 # Other files and folders
 .settings/
 
+# misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 # Executables
 *.swf
 *.air
