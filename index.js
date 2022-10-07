@@ -54,7 +54,7 @@ app.use(cors(corsOptions));
 
 //Variables de entorno
 const PORT = process.env.PORT || 4000;
-const server  = process.env.SERVER;
+const server  = process.env.SERVER || "/pruebas";
 
 //Routing
 app.use(`${server}/api/usuarios`,usuariosRoutes);
