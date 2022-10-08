@@ -56,6 +56,7 @@ app.use(cors(corsOptions));
 const PORT = process.env.PORT || 4000;
 const server  = process.env.SERVER || "/pruebas";
 
+
 //Routing
 app.use(`${server}/api/usuarios`,usuariosRoutes);
 app.use(`${server}/api/articulos`,consultaArtiRoutes);
@@ -83,7 +84,7 @@ app.use(`${server}/api/rolejecutable`,rolejecutablRoutes);
 
 
 const servidor = app.listen(PORT,() => {
-    console.log(`Servidor corriendo en el puerdo ${PORT}`);
+    console.log(`Servidor corriendo en el puerdo ${PORT} server ${server}`);
 });
 
 //console.log(servidor);
