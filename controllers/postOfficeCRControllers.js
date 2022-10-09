@@ -17,9 +17,9 @@ const getProvincesPostOffice = async (req, res) => {
 </soapenv:Envelope>`;
 
   try {
-	  res.json({msg: auth});
+	  
     
-    /*const response = await axios.post(
+    const response = await axios.post(
         `${process.env.DEV_URL_WEB_SERVICE}/wsAppCorreos.wsAppCorreos.svc`,
       xml,
       {
@@ -30,6 +30,8 @@ const getProvincesPostOffice = async (req, res) => {
         },
       }
     );
+	res.json(response);
+	/*
     const data = response?.data;    
     const provinces = getXmlProvinces(data);
     return res.json(provinces);*/
