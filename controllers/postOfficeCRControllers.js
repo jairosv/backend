@@ -7,7 +7,7 @@ dotenv.config();
 
 
 const getProvincesPostOffice = async (req, res) => {
-	console.log(req.body)
+	
   const auth = await getToken();
   const xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
    <soapenv:Header/>
@@ -17,8 +17,9 @@ const getProvincesPostOffice = async (req, res) => {
 </soapenv:Envelope>`;
 
   try {
+	  res.json({msg: auth});
     
-    const response = await axios.post(
+    /*const response = await axios.post(
         `${process.env.DEV_URL_WEB_SERVICE}/wsAppCorreos.wsAppCorreos.svc`,
       xml,
       {
@@ -31,7 +32,7 @@ const getProvincesPostOffice = async (req, res) => {
     );
     const data = response?.data;    
     const provinces = getXmlProvinces(data);
-    return res.json(provinces);
+    return res.json(provinces);*/
   
 } catch (error) {
       console.error(error);
