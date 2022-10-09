@@ -7,6 +7,7 @@ dotenv.config();
 
 
 const getProvincesPostOffice = async (req, res) => {
+	console.log(req.body)
   const auth = await getToken();
   const xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
    <soapenv:Header/>
