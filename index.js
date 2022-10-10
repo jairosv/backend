@@ -48,14 +48,10 @@ const corsOptions = {
 
         }
     },
-	
+	methods: ["GET", "POST", "DELETE"],
+    credentials: true,
+    origin: true
 }
-app.use((req,res,next)=>{
-    res.setHeader('Access-Control-Allow-Origin','*');
-    res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
-    res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
-    next(); 
-})
 
 app.use(cors(corsOptions));
 

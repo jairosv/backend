@@ -30,11 +30,11 @@ const getProvincesPostOffice = async (req, res) => {
         },
       }
     );
-	res.json(response);
-	/*
+	
+	
     const data = response?.data;    
     const provinces = getXmlProvinces(data);
-    return res.json(provinces);*/
+    return res.json(provinces);
   
 } catch (error) {
       console.error(error);
