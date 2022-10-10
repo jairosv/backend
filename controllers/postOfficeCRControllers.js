@@ -24,7 +24,7 @@ const getProvincesPostOffice = async (req, res) => {
       xml,
       {
         headers: {
-          SOAPAction: "https://tempuri.org/IwsAppCorreos/ccrCodProvincia",
+          SOAPAction: "http://tempuri.org/IwsAppCorreos/ccrCodProvincia",
           "Content-Type": "text/xml; charset=utf-8",
           Authorization: auth.postToke
         },
