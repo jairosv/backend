@@ -43,11 +43,19 @@ const corsOptions = {
             callback(null, true);
         } else{
             //No esta permitido.
+			console.log("Error");
             callback(new Error("Error de Cors"))
 
         }
-    }
+    },
+	
 }
+app.use((req,res,next)=>{
+    res.setHeader('Access-Control-Allow-Origin','*');
+    res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
+    res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
+    next(); 
+})
 
 app.use(cors(corsOptions));
 
