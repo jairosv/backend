@@ -18,13 +18,13 @@ const getProvincesPostOffice = async (req, res) => {
 
   try {
 	  
-    
+    console.log(auth);
     const response = await axios.post(
         `${process.env.DEV_URL_WEB_SERVICE}/wsAppCorreos.wsAppCorreos.svc`,
       xml,
       {
         headers: {
-          SOAPAction: "http://tempuri.org/IwsAppCorreos/ccrCodProvincia",
+          SOAPAction: "https://tempuri.org/IwsAppCorreos/ccrCodProvincia",
           "Content-Type": "text/xml; charset=utf-8",
           Authorization: auth.postToke
         },
@@ -73,7 +73,7 @@ const getCantonsPostOffice = async (req, res) => {
         const cantons = getXmlCantons(data);
         return res.json(cantons);
     } catch (error) {
-        console.log(error.response);
+        console.log(error);
         res.status(500).send(error);
 
     }
@@ -113,6 +113,7 @@ const getDistrictsPostOffice = async (req, res) => {
         const districts = getXmlDistricts(data);
         return res.json(districts);
     } catch (error) {
+		console.log(error);
         res.status(500).send(error);
     }
 };
