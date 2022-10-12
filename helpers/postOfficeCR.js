@@ -19,7 +19,7 @@ const getTokenPostOffice = async (req) => {
           const data = response?.data;
           return { postToke: data };
       } catch (error) {
-          console.log(error);
+          console.log("Error:",error);
       }
   };
   

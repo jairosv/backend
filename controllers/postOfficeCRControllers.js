@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getToken, getXmlProvinces, getXmlCantons, addZeroInNumber, getXmlDistricts } from '../helpers/postOfficeCR.js';
+import db from '../config/database.js';
 
 import dotenv from 'dotenv';
 
@@ -7,19 +8,27 @@ dotenv.config();
 
 
 const getProvincesPostOffice = async (req, res) => {
-	
-  const auth = await getToken();
+  /*const auth = await getToken();
   const xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
    <soapenv:Header/>
    <soapenv:Body>
       <tem:ccrCodProvincia/>
    </soapenv:Body>
-</soapenv:Envelope>`;
+</soapenv:Envelope>`;*/
 
   try {
-	  
-    console.log(auth);
-    const response = await axios.post(
+
+    const resultado = await db.query('CALL ge_locageo_data(:Pvi_tipo,:Pni_cod_prov,:Pni_cod_cant);',{
+      replacements:{
+          Pvi_tipo: 'P',
+          Pni_cod_prov: null,
+          Pni_cod_cant: null,          
+      }
+    });
+    
+    res.json(resultado);
+    
+    /*const response = await axios.post(
         `${process.env.DEV_URL_WEB_SERVICE}/wsAppCorreos.wsAppCorreos.svc`,
       xml,
       {
@@ -30,11 +39,10 @@ const getProvincesPostOffice = async (req, res) => {
         },
       }
     );
-	
-	
-    const data = response?.data;    
+    const data = response?.data;
+
     const provinces = getXmlProvinces(data);
-    return res.json(provinces);
+    return res.json(provinces);*/
   
 } catch (error) {
       console.error(error);
@@ -46,7 +54,7 @@ const getProvincesPostOffice = async (req, res) => {
 const getCantonsPostOffice = async (req, res) => {
     const { id } =  req.params;
     
-    const auth = await getToken();
+    /*const auth = await getToken();
     const xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
     <soapenv:Header/>
     <soapenv:Body>
@@ -55,10 +63,10 @@ const getCantonsPostOffice = async (req, res) => {
             <tem:CodProvincia>${id}</tem:CodProvincia>
         </tem:ccrCodCanton>
     </soapenv:Body>
-    </soapenv:Envelope>`;
+    </soapenv:Envelope>`;*/
 
     try {
-        const response = await axios.post(
+        /*const response = await axios.post(
             `${process.env.DEV_URL_WEB_SERVICE}/wsAppCorreos.wsAppCorreos.svc`,//"http://amistad.correos.go.cr:84/wsAppCorreos.wsAppCorreos.svc",
         xml,
         {
@@ -70,10 +78,24 @@ const getCantonsPostOffice = async (req, res) => {
         }
         );
         const data = response?.data;
-        const cantons = getXmlCantons(data);
-        return res.json(cantons);
+        const cantons = getXmlCantons(data);*/
+        
+        const resultado = await db.query('CALL ge_locageo_data(:Pvi_tipo,:Pni_cod_prov,:Pni_cod_cant);',{
+          replacements:{
+              Pvi_tipo: 'C',
+              Pni_cod_prov: id,
+              Pni_cod_cant: null,          
+          }
+        });
+        
+        res.json(resultado);
+        
+       
+
+        //return res.json(cantons);
+        
     } catch (error) {
-        console.log(error);
+        console.log(error.response);
         res.status(500).send(error);
 
     }
@@ -82,7 +104,7 @@ const getCantonsPostOffice = async (req, res) => {
 const getDistrictsPostOffice = async (req, res) => {
     let {codeCant, codeProv }= req.params;
    
-    const auth = await getToken();    
+    /*const auth = await getToken();    
     codeCant = addZeroInNumber(codeCant);
 
     const xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
@@ -95,10 +117,10 @@ const getDistrictsPostOffice = async (req, res) => {
             <tem:CodCanton>${codeCant}</tem:CodCanton>
         </tem:ccrCodDistrito>
     </soapenv:Body>
-    </soapenv:Envelope>`;
+    </soapenv:Envelope>`;*/
 
     try {
-        const response = await axios.post(
+        /*const response = await axios.post(
           `${process.env.DEV_URL_WEB_SERVICE}/wsAppCorreos.wsAppCorreos.svc`,
         xml,
         {
@@ -111,9 +133,18 @@ const getDistrictsPostOffice = async (req, res) => {
         );
         const data = response?.data;
         const districts = getXmlDistricts(data);
-        return res.json(districts);
+        return res.json(districts);*/
+        const resultado = await db.query('CALL ge_locageo_data(:Pvi_tipo,:Pni_cod_prov,:Pni_cod_cant);',{
+          replacements:{
+              Pvi_tipo: 'D',
+              Pni_cod_prov: codeProv,
+              Pni_cod_cant: codeCant,          
+          }
+        });
+        
+        res.json(resultado);
+
     } catch (error) {
-		console.log(error);
         res.status(500).send(error);
     }
 };

@@ -43,14 +43,10 @@ const corsOptions = {
             callback(null, true);
         } else{
             //No esta permitido.
-			console.log("Error");
             callback(new Error("Error de Cors"))
 
         }
-    },
-	methods: ["GET", "POST", "DELETE"],
-    credentials: true,
-    origin: true
+    }
 }
 
 app.use(cors(corsOptions));
@@ -59,7 +55,6 @@ app.use(cors(corsOptions));
 //Variables de entorno
 const PORT = process.env.PORT || 4000;
 const server  = process.env.SERVER || "/pruebas";
-
 
 //Routing
 app.use(`${server}/api/usuarios`,usuariosRoutes);
@@ -88,7 +83,7 @@ app.use(`${server}/api/rolejecutable`,rolejecutablRoutes);
 
 
 const servidor = app.listen(PORT,() => {
-    console.log(`Servidor corriendo en el puerdo ${PORT} server ${server}`);
+    console.log(`Servidor corriendo en el puerdo ${PORT}`);
 });
 
 //console.log(servidor);

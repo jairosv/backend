@@ -93,7 +93,7 @@ const editarUsuario = async (req, res) => {
     try {                
 
         const usuario = await Usuarios.findByPk(id);
-        //USU_CODIGO  ,USU_NOMBRE, USU_LOGIN, USU_EMAIL, USU_CEDULA, USU_CELULAR, USU_STATE 
+        //USU_CODIGO  ,USU_NOMBRE, USU_LOGIN, USU_EMAIL, USU_CEDULA, USU_CELULAR, USU_STATE
         
         
         usuario.USU_NOMBRE = req.body.USU_NOMBRE || usuario.USU_NOMBRE;
