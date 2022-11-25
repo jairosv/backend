@@ -27,7 +27,7 @@ const crearColores =  async (req, res) => {
     colores.col_creado_por = req.usuario.USU_LOGIN;
     colores.col_fechacreado = Date.now();
     colores.col_modificado_por = null;
-    colores.col_fechamodificado = null;
+    colores.col_fechamodificado = null;    
     try {
         // Creamos
         const colorAlmacenado =  await colores.save();

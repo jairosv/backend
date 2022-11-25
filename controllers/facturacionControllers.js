@@ -17,7 +17,16 @@ const obtieneArticulosFacturar = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        res.status(500).send(error);
+        const data = {
+            log_user: req.usuario.USU_CODIGO,
+            log_login: req.usuario.USU_LOGIN,
+            log_proceso: "obtieneArticulosPedido",
+            log_jsonerror: error,
+            log_fecha: Date.now()
+        } 
+        const errorlog =  new ErrorLog(data);
+        const newerrorlog = await errorlog.save(data);
+        res.status(500).send(newerrorlog);
     }
 }
 
@@ -227,7 +236,7 @@ const procesoPedido = async (req, res) => {
     const parametros = req.body;
 
     try {
-        const resultado =  await db.query('CALL web_procesos_pedidos_pr(:pedido, :proceso, :usuarioid, :usuario, :costoenvio, :tipoenvio, :numeroguia );',{
+        const resultado =  await db.query('CALL web_procesos_pedidos_pr(:pedido, :proceso, :usuarioid, :usuario, :costoenvio, :tipoenvio, :numeroguia, :tipofactura, :descuento);',{
             replacements: {
                 pedido: parametros.pedido,
                 proceso: parametros.proceso,
@@ -235,7 +244,10 @@ const procesoPedido = async (req, res) => {
                 usuario: req.usuario.USU_LOGIN,
                 costoenvio: parametros.costoenvio || 0,
                 tipoenvio: parametros.tipoenvio || null,
-                numeroguia: parametros.numeroguia || null
+                numeroguia: parametros.numeroguia || null,
+                tipofactura:parametros.tipofactura,
+                descuento: parametros.descuento || null
+
             }
         });
         if(resultado !== undefined){
@@ -292,7 +304,7 @@ const obtieneListaFacturas = async (req, res) => {
     const { id } =  req.params;
     
     try {
-        const resultado = await db.query('CALL web_fac_listado_facturas_pr(:Pni_transaccion, :Pni_cliente, :Pvi_nombre, :Pni_factura, :Pni_pedido, :Pvi_simbolo, :Pdi_fechafact, :Pni_vendedor, :Pni_estado);',{
+        const resultado = await db.query('CALL web_fac_listado_facturas_pr(:Pni_transaccion, :Pni_cliente, :Pvi_nombre, :Pni_factura, :Pni_pedido, :Pvi_simbolo, :Pdi_fechafact, :Pni_vendedor, :Pni_estado,:Pvi_identificacion,:Pvi_tipofactura,:Pvi_simbolosaldo,:Pni_saldofactura);',{
             replacements:{
                 Pni_transaccion:  req.body.transaccion || null,
                 Pni_cliente: id || null,
@@ -302,7 +314,11 @@ const obtieneListaFacturas = async (req, res) => {
                 Pvi_simbolo: req.body.simbolo || null,
                 Pdi_fechafact: req.body.fechafact || null,
                 Pni_vendedor: req.body.vendedor || null,
-                Pni_estado: req.body.estado || null
+                Pni_estado: req.body.estado || null,
+                Pvi_identificacion: req.body.identificacion || null,
+                Pvi_tipofactura: req.body.tipofactura || null,
+                Pvi_simbolosaldo: req.body.simbolosaldo || null,
+                Pni_saldofactura: req.body.saldofactura || null
             }
         });
         res.json(resultado);
@@ -446,7 +462,7 @@ const obtieneListSeguiContraPedido = async (req, res) => {
 const procesoNotasCredito = async (req, res) => {
     const { id } = req.params;
     const parametros = req.body;
-    console.log(parametros);
+
     try {
         const resultado =  await db.query('CALL web_fac_procesos_notas_cr_db(:Pni_transaccion, :Pvi_tipoaccion, :Pni_Linea, :Pvi_devgar, :Pvi_usuario );',{
             replacements: {
@@ -556,12 +572,63 @@ const procesoDetallePagoFactura = async (req, res) => {
     const { id } =  req.params;
 
     try {
-        const resultado =  await db.query('CALL web_fac_valida_det_pago_factura(:Pni_transaccionFac, :Pni_consDeposito, :Pni_MontoAplicar ,:Pvi_usuario );',{
+        const resultado =  await db.query('CALL web_fac_valida_det_pago_factura(:Pni_transaccionFac, :Pni_consDeposito, :Pni_MontoAplicar ,:Pvi_usuario, :Pvi_formapago );',{
             replacements: {
                 Pni_transaccionFac: id,
                 Pni_consDeposito: parametros.Pni_consDeposito,
                 Pni_MontoAplicar: parametros.Pni_MontoAplicar,
                 Pvi_usuario: req.usuario.USU_LOGIN,
+                Pvi_formapago: parametros.Pvi_formapago || null
+            }
+        });
+        if(resultado !== undefined){
+            if(resultado[0].Level === 'Warning' || resultado[0].Level === 'Error'){
+                const data = {
+                    log_user: req.usuario.USU_CODIGO,
+                    log_login: req.usuario.USU_LOGIN,
+                    log_proceso: `procesoDetallePagoFactura / ${resultado[0].Level}`,
+                    log_jsonerror: resultado,
+                    log_fecha: Date.now()
+                } 
+                const errorlog =  new ErrorLog(data);
+                const newerrorlog = await errorlog.save(data);
+                return res.status(500).send(newerrorlog);
+            }
+        }
+        res.json({msg: "Proceso realizado con exito."});
+    } catch (error) {
+        console.log(error);
+        const data = {
+            log_user: req.usuario.USU_CODIGO,
+            log_login: req.usuario.USU_LOGIN,
+            log_proceso: "procesoDetallePagoFactura / General",
+            log_jsonerror: error,
+            log_fecha: Date.now()
+        } 
+        const errorlog =  new ErrorLog(data);
+        const newerrorlog = await errorlog.save(data);
+        res.status(500).send(newerrorlog);
+    }
+}
+
+//Proceso detalle pago factura
+const procesoPagoFactura = async (req, res) => {
+    const parametros = req.body;
+    const fechadeposito = parametros.fecha +' ' + parametros.hora
+
+    try {
+        const resultado =  await db.query('CALL fac_genera_pago_factura(:Pni_clienteid, :Pni_transaccionFac, :Pni_banco ,:Pvi_formapago, :Pni_deposito, :Pvi_detalle, :Pdi_fechadeposito, :Pni_monto, :Pvi_usuario );',{
+            replacements: {
+                Pni_clienteid: parametros.clienteid,
+                Pni_transaccionFac: parametros.transaccionfact,
+                Pni_banco: parametros.bancoid,
+                Pvi_formapago: parametros.formapago || null,
+                Pni_deposito: parametros.documento,
+                Pvi_detalle: parametros.detalle,
+                Pdi_fechadeposito: fechadeposito || Date.now(),
+                Pni_monto: parametros.monto,
+                Pvi_usuario: req.usuario.USU_LOGIN
+                
             }
         });
         if(resultado !== undefined){
@@ -710,5 +777,6 @@ export {
     procesoDetallePagoFactura,
     procesoCambiaTipoPedido,
     obtienerPrecioArticulo,
-    obtieneDetallePagoFactura
+    obtieneDetallePagoFactura,
+    procesoPagoFactura
 }

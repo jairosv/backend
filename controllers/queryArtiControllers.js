@@ -8,16 +8,16 @@ const obtenerArticulos = async (req, res) => {
     try {
         const resultado = await db.query('CALL web_listado_articulos(:Pvi_codiarticulo,:Pvi_nombre,:Pni_marca,:Pvi_simbolo,:Pni_cantidad,:Pni_departamento,:Pni_sub_departamento,:Pni_sub_categoria, :Pvi_signofecha,:Pnd_fechaingreso,:Pni_idcolor,:Pni_idtalla);',{
             replacements: {
-                Pvi_codiarticulo: parametros.Pvi_codiarticulo || "",
-                Pvi_nombre: parametros.Pvi_nombre || "",
-                Pni_marca: parametros.Pni_marca || "",
+                Pvi_codiarticulo: parametros.Pvi_codiarticulo || null,
+                Pvi_nombre: parametros.Pvi_nombre || null,
+                Pni_marca: parametros.Pni_marca || null,
                 Pvi_simbolo: parametros.Pvi_simbolo || ">=",
-                Pni_cantidad: parametros.Pni_cantidad || 0,
-                Pni_departamento: parametros.Pni_departamento || "",
-                Pni_sub_departamento: parametros.Pni_sub_departamento || "",
-                Pni_sub_categoria: parametros.Pni_sub_categoria || "",
+                Pni_cantidad: parametros.Pni_cantidad || null,
+                Pni_departamento: parametros.Pni_departamento || null,
+                Pni_sub_departamento: parametros.Pni_sub_departamento || null,
+                Pni_sub_categoria: parametros.Pni_sub_categoria || null,
                 Pvi_signofecha: parametros.Pvi_signofecha || ">=",
-                Pnd_fechaingreso: parametros.Pnd_fechaingreso || "",
+                Pnd_fechaingreso: parametros.Pnd_fechaingreso || null,
                 Pni_idcolor: parametros.Pni_idcolor || null,
                 Pni_idtalla: parametros.Pni_idtalla || null
             }

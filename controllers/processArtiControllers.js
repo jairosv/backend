@@ -28,6 +28,7 @@ const insertaArticulos = async (req, res) => {
                            usuario: req.usuario.USU_LOGIN
             }
         });
+        console.log(resultado)
         if(resultado[0].Level === 'Warning' || resultado[0].Level === 'Error'){
             
             const data = {

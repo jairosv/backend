@@ -14,11 +14,9 @@ const checkAuth = async (req, res, next) => {
 
             req.usuario = await Usuarios.findByPk(decoded.id,{
                 attributes: {exclude: ['USU_PASSWORD', 'USU_TOKEN', 'USU_CONFIRMADO']}
-
             });
-            
-           return next();
-           
+
+            return next();
             
         } catch (error) {
             console.log(error);

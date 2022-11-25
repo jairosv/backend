@@ -23,7 +23,7 @@ const router =  express.Router();
 
 //Autentificacion, Registro y Confirmacion de Usuarios
 
-router.post("/registrar",registrar);//crear un nuevo usuario
+router.post("/registrar",checkAuth,registrar);//crear un nuevo usuario
 router.post('/login',autenticar);
 
 router.post('/olvide-password',olvidePassword);

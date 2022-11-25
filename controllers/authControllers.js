@@ -31,30 +31,9 @@ const obtieneUsuarios = async (req, res) => {
 
 //Registra
 const registrar = async (req, res) => {    
-    //Evitar registros duplicados.
-    const { USU_LOGIN } = req.body;
-    const existeUsuario = await Usuarios.findOne({
-        where: {
-            USU_LOGIN: USU_LOGIN
-        }
-    });
-
-    if(existeUsuario){
-        const error = new Error('Usuario ya registrado');
-        const data = {
-            log_user: req.usuario.USU_CODIGO,
-            log_login: req.usuario.USU_LOGIN,
-            log_proceso: "registrar",
-            log_jsonerror: error,
-            log_fecha: Date.now()
-        } 
-        const errorlog =  new ErrorLog(data);
-        await errorlog.save(data);
-        return res.status(400).json({msg: error.message});
-    }
-
+   
     try {
-        const newUsuario =  new Usuarios(req.body);
+        const newUsuario =  new Usuarios(req.body);        
         newUsuario.USU_TOKEN = generarId();
         newUsuario.USU_CREADO_POR = req.usuario.USU_LOGIN;
         newUsuario.USU_PASSWORD = process.env.ADMIN_AUTH;
@@ -83,7 +62,7 @@ const registrar = async (req, res) => {
         } 
         const errorlog =  new ErrorLog(data);
         await errorlog.save(data);
-        res.json(error);
+        res.status(500).send(error);
     }
 
 }

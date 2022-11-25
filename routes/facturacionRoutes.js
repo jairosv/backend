@@ -17,7 +17,8 @@ import {
     procesoDetallePagoFactura,
     procesoCambiaTipoPedido,
     obtienerPrecioArticulo,
-    obtieneDetallePagoFactura
+    obtieneDetallePagoFactura,
+    procesoPagoFactura
 
 } from '../controllers/facturacionControllers.js';
 
@@ -43,7 +44,8 @@ router.post('/cambiatipopedido',checkAuth,procesoCambiaTipoPedido);
 router.get('/obtieneprecioart/:id',checkAuth,obtienerPrecioArticulo);
 
 //Metodo Facturas
-router.post('/obtienelistadofact/:id',checkAuth,obtieneListaFacturas)
+router.post('/obtienelistadofact/:id',checkAuth,obtieneListaFacturas);
+router.post('/pagoabonofactura',checkAuth,procesoPagoFactura);
 router
     .route('/:id')
     .get(checkAuth,obtieneDetallePagoFactura)//Obtiene el detalle de pago de una factura 

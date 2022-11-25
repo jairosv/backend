@@ -24,6 +24,10 @@ const Bancos = db.define('ge_bancos_tbs',{
         type:Sequelize.STRING,
         required: true
     },
+    ban_mostrarcombo:{
+        type:Sequelize.TINYINT,
+        required: true
+    }
 },
     {
         timestamps: false,

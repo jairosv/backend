@@ -23,6 +23,7 @@ import subdepartamentoRoutes from './routes/subdepartamentoRoutes.js';
 import subcategoriasRoutes from './routes/subcategoriaRoutes.js';
 import errorlogRoutes from './routes/errorlogRoutes.js';
 import rolejecutablRoutes from './routes/rolejecutableRoutes.js';
+import formapagoRouter from './routes/formapagoRoutes.js';
 
 
 const app = express();
@@ -34,7 +35,7 @@ dotenv.config();
 
 //Configurar CORS
 
-const whitelist = [ process.env.FRONTEND_URL, process.env.FRONTEND_RED, process.env.FRONTEND_HOSTNAME, process.env.BACKEND_RED, process.env.FRONTEND_HOSTNAME_LAPTOP, process.env.FRONTEND_RED_LAPTOP ];
+const whitelist = [ process.env.FRONTEND_URL, process.env.FRONTEND_RED, process.env.FRONTEND_HOSTNAME, process.env.BACKEND_RED, process.env.FRONTEND_HOSTNAME_LAPTOP, process.env.FRONTEND_RED_LAPTOP, process.env.FRONTEND_UNI];
 
 const corsOptions = {
     origin: function(origin, callback){
@@ -79,6 +80,8 @@ app.use(`${server}/api/subdepartamento`,subdepartamentoRoutes);
 app.use(`${server}/api/subcategoria`,subcategoriasRoutes);
 app.use(`${server}/api/errorlog`,errorlogRoutes);
 app.use(`${server}/api/rolejecutable`,rolejecutablRoutes);
+app.use(`${server}/api/formapago`,formapagoRouter);
+
 
 
 
