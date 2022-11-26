@@ -581,7 +581,11 @@ const procesoDetallePagoFactura = async (req, res) => {
                 Pvi_formapago: parametros.Pvi_formapago || null
             }
         });
-        if(resultado !== undefined){
+
+        
+
+
+        if(resultado !== undefined && resultado.length !== 0){
             if(resultado[0].Level === 'Warning' || resultado[0].Level === 'Error'){
                 const data = {
                     log_user: req.usuario.USU_CODIGO,
@@ -625,18 +629,21 @@ const procesoPagoFactura = async (req, res) => {
                 Pvi_formapago: parametros.formapago || null,
                 Pni_deposito: parametros.documento,
                 Pvi_detalle: parametros.detalle,
-                Pdi_fechadeposito: fechadeposito || Date.now(),
+                Pdi_fechadeposito: fechadeposito.trim() || null,
                 Pni_monto: parametros.monto,
                 Pvi_usuario: req.usuario.USU_LOGIN
                 
             }
         });
-        if(resultado !== undefined){
+
+        console.log(resultado);
+
+        if(resultado !== undefined && resultado.length !== 0){
             if(resultado[0].Level === 'Warning' || resultado[0].Level === 'Error'){
                 const data = {
                     log_user: req.usuario.USU_CODIGO,
                     log_login: req.usuario.USU_LOGIN,
-                    log_proceso: `procesoDetallePagoFactura / ${resultado[0].Level}`,
+                    log_proceso: `procesoPagoFactura / ${resultado[0].Level}`,
                     log_jsonerror: resultado,
                     log_fecha: Date.now()
                 } 
@@ -651,7 +658,7 @@ const procesoPagoFactura = async (req, res) => {
         const data = {
             log_user: req.usuario.USU_CODIGO,
             log_login: req.usuario.USU_LOGIN,
-            log_proceso: "procesoDetallePagoFactura / General",
+            log_proceso: "procesoPagoFactura / General",
             log_jsonerror: error,
             log_fecha: Date.now()
         } 
