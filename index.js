@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from 'dotenv';
 import cors from 'cors';
-/*import consultaArtiRoutes from './routes/queryArtiRoutes.js';
+import consultaArtiRoutes from './routes/queryArtiRoutes.js';
 import usuariosRoutes from './routes/usuariosRoutes.js';
 import processArtiRoutes from './routes/processArtiRoutes.js'
 import bancosRoutes from './routes/bancosRoutes.js';
@@ -23,7 +23,7 @@ import subdepartamentoRoutes from './routes/subdepartamentoRoutes.js';
 import subcategoriasRoutes from './routes/subcategoriaRoutes.js';
 import errorlogRoutes from './routes/errorlogRoutes.js';
 import rolejecutablRoutes from './routes/rolejecutableRoutes.js';
-import formapagoRouter from './routes/formapagoRoutes.js';*/
+import formapagoRouter from './routes/formapagoRoutes.js';
 
 
 const app = express();
@@ -58,7 +58,7 @@ const PORT = process.env.PORT || 4000;
 const server  = process.env.SERVER || "/pruebas";
 
 //Routing
-/*app.use(`${server}/api/usuarios`,usuariosRoutes);
+app.use(`${server}/api/usuarios`,usuariosRoutes);
 app.use(`${server}/api/articulos`,consultaArtiRoutes);
 app.use(`${server}/api/processarti`,processArtiRoutes);
 app.use(`${server}/api/mantebancos`,bancosRoutes);
@@ -81,7 +81,6 @@ app.use(`${server}/api/subcategoria`,subcategoriasRoutes);
 app.use(`${server}/api/errorlog`,errorlogRoutes);
 app.use(`${server}/api/rolejecutable`,rolejecutablRoutes);
 app.use(`${server}/api/formapago`,formapagoRouter);
-*/
 
 
 
